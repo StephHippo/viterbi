@@ -7,9 +7,6 @@ class HMM:
         self.emission_prob = emission_prob
 
 
-    def viterbi(self):
-
-
 
 
 
