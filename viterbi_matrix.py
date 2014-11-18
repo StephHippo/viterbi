@@ -4,11 +4,14 @@ class Viterbi_Matrix:
     def __init__(self,hidden_markov_model):
         self.hmm = hidden_markov_model
         self.matrix = {}
+        self.viterbi_path = [None] * len(self.hmm.observations)
 
     def viterbi(self):
         #initialize start probabilities in first column
         self.__initialize_matrix()
         for i in xrange(len(self.hmm.observations)-1):
+            top_state = None
+            highest_prob = 0
             for transition in self.hmm.transition_prob:
                 max = 0
                 for state in self.hmm.states:
@@ -21,11 +24,22 @@ class Viterbi_Matrix:
                     if candidate > max:
                         max = candidate
                 self.matrix[transition][i+1] = max
+                if max > highest_prob:
+                    highest_prob = max
+                    top_state = transition
+            self.viterbi_path[i+1] = top_state
+
+
+
 
     def __initialize_matrix(self):
+        start = None
         for state in self.hmm.start_prob:
             self.matrix[state] = [None] * (len(self.hmm.observations))
             self.matrix[state][0] = self.hmm.start_prob[state] * self.hmm.emission_prob[state][self.hmm.observations[0]]
+            if self.matrix[state][0] > start:
+                start = state
+        self.viterbi_path[0]=start
 
     def __validate_matrix_filled(self):
         for key in self.matrix:
@@ -40,7 +54,6 @@ class Viterbi_Matrix:
         for observation in self.hmm.observations:
             header += "\t|"
             header += observation
-            header += "\t"
         table+=header+"\n"
         body = ""
         for state in self.hmm.states:
@@ -58,3 +71,6 @@ class Viterbi_Matrix:
     def probability_at_ith_observation(self, i, state):
         self.__validate_matrix_filled()
         return self.matrix[state][i-1]
+
+    def print_path(self):
+        return self.viterbi_path
