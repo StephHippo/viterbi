@@ -33,4 +33,5 @@ class TestViterbi(unittest.TestCase):
         assert self.casino.viterbi_matrix() == solution_matrix
 
     def test_viterbi_path(self):
+        assert self.casino.viterbi_path == ['B','B','B','B','B','B','B','B','B','B']
 
