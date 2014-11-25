@@ -25,8 +25,6 @@ casino = Viterbi_Matrix(casino_markov)
 casino.viterbi()
 casino.print_table()
 print casino.viterbi_path
-casino.backwards_probability()
-casino.print_posterior_matrix()
 
 # states = ('H', 'F')
 # observation = ["Normal", "Cold", "Dizzy"]
