@@ -1,4 +1,5 @@
 __author__ = 'stephaniehippo'
+from HMM import HMM
 
 class Forward_Matrix:
     def __init__(self, hidden_markov_model):
