@@ -3,7 +3,7 @@ from HMM import HMM
 class Viterbi_Matrix:
     def __init__(self,hidden_markov_model):
         self.hmm = hidden_markov_model
-        self.forward_matrix = {}
+        self.viterbi_matrix = {}
         self.viterbi_path = [None] * len(self.hmm.observations)
         self.posterior_matrix = {}
 
@@ -17,14 +17,14 @@ class Viterbi_Matrix:
                 max = 0
                 for state in self.hmm.states:
                     # for emission in self.hmm.emission_prob[state]:
-                    prev_prob = self.forward_matrix[state][i]
+                    prev_prob = self.viterbi_matrix[state][i]
                     trans_prob = self.hmm.transition_prob[state][transition]
                     observe = self.hmm.observations[i+1]
                     emis_prob = self.hmm.emission_prob[transition][observe]
                     candidate = prev_prob * trans_prob * emis_prob
                     if candidate > max:
                         max = candidate
-                self.forward_matrix[transition][i+1] = max
+                self.viterbi_matrix[transition][i+1] = max
                 if max > highest_prob:
                     highest_prob = max
                     top_state = transition
@@ -33,22 +33,22 @@ class Viterbi_Matrix:
     def __initialize_matrix(self):
         start = None
         for state in self.hmm.start_prob:
-            self.forward_matrix[state] = [None] * (len(self.hmm.observations))
-            self.forward_matrix[state][0] = self.hmm.start_prob[state] * self.hmm.emission_prob[state][self.hmm.observations[0]]
-            if self.forward_matrix[state][0] > start:
+            self.viterbi_matrix[state] = [None] * (len(self.hmm.observations))
+            self.viterbi_matrix[state][0] = self.hmm.start_prob[state] * self.hmm.emission_prob[state][self.hmm.observations[0]]
+            if self.viterbi_matrix[state][0] > start:
                 start = state
         self.viterbi_path[0]=start
 
     def __validate_matrix_filled(self):
-        for key in self.forward_matrix:
-            for value in self.forward_matrix[key]:
+        for key in self.viterbi_matrix:
+            for value in self.viterbi_matrix[key]:
                 if value == None:
                     raise "Matrix needs filled out. Run Viterbi first"
 
     def print_table(self):
         self.__validate_matrix_filled()
         table = ""
-        header = "\t\t"
+        header = "\t"
         for observation in self.hmm.observations:
             header += "\t|"
             header += observation
@@ -60,8 +60,8 @@ class Viterbi_Matrix:
             body += state
             body += "\t"
             for observation in xrange(len(self.hmm.observations)):
-                body += "\t|"
-                body += str(round(self.forward_matrix[state][observation],4))
+                body += "|"
+                body += str(round(self.viterbi_matrix[state][observation],6))
             body += "\n"
         table += body
         print table
@@ -111,4 +111,4 @@ class Viterbi_Matrix:
 
     def probability_at_ith_observation(self, i, state):
         self.__validate_matrix_filled()
-        return self.forward_matrix[state][i-1]
+        return self.viterbi_matrix[state][i-1]
