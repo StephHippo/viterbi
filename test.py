@@ -28,10 +28,13 @@ class TestViterbi(unittest.TestCase):
 
     def test_viterbi(self):
         self.casino.viterbi()
-        solution_matrix = [[0.25, 0.1125, 0.050625, 0.022781, 0.010252, 0.004613, 0.002076, 0.000934, 0.00042, 0.000189],
-                [0.375, 0.253125, 0.170859, 0.11533, 0.077848, 0.017516, 0.003941, 0.000887, 0.0002, 4.5e-05]]
-        assert self.casino.viterbi_matrix() == solution_matrix
+        solution_matrix = {'F': [0.25, 0.1125, 0.050625, 0.022781, 0.010252, 0.004613, 0.002076, 0.000934, 0.00042, 0.000189],
+                'B': [0.375, 0.253125, 0.170859, 0.11533, 0.077848, 0.017516, 0.003941, 0.000887, 0.0002, 4.5e-05]}
+        for coin in self.casino.hmm.states:
+            for i in xrange(len(solution_matrix[coin])):
+                assert round(self.casino.viterbi_matrix[coin][i], 6) == solution_matrix[coin][i]
 
     def test_viterbi_path(self):
-        assert self.casino.viterbi_path == ['B','B','B','B','B','B','B','B','B','B']
+        self.casino.viterbi()
+        assert self.casino.viterbi_path == ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B']
 
