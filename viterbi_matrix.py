@@ -66,29 +66,6 @@ class Viterbi_Matrix:
         table += body
         print table
 
-    def backwards_probability(self):
-        #initialize posterior matrix
-            #for each state
-            #allocate an array of length observations+1
-        for state in self.hmm.states:
-            self.posterior_matrix[state] = [None]*(len(self.hmm.observations)+1)
-            self.posterior_matrix[state][-1] = 1
-        #for each observation, starting from the end
-        for i in xrange(len(self.hmm.observations)): #fill out each col of the table
-            for transition in self.hmm.transition_prob: #for each row in the table
-                #for observation in reversed(self.hmm.observations):
-                observation = self.hmm.observations[-i]
-                probability = 0
-                for state in self.hmm.states:
-                    #get the previous probability
-                    prev_prob = self.posterior_matrix[state][-(i+1)]
-                    #the transition probability
-                    trans_prob = self.hmm.transition_prob[state][transition]
-                    #the emission probability
-                    emission_prob = self.hmm.emission_prob[state][observation]
-                    probability += prev_prob * trans_prob * emission_prob
-                self.posterior_matrix[transition][-(i+2)]=probability
-
     def print_posterior_matrix(self):
         table = ""
         header = "\t\t"
@@ -108,7 +85,3 @@ class Viterbi_Matrix:
             body += "\n"
         table += body
         print table
-
-    def probability_at_ith_observation(self, i, state):
-        self.__validate_matrix_filled()
-        return self.viterbi_matrix[state][i-1]
