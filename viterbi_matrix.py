@@ -27,7 +27,7 @@ class Viterbi_Matrix:
                 self.viterbi_matrix[transition][i+1] = max
                 if max > highest_prob:
                     highest_prob = max
-                    top_state = transition
+                    top_state = state
             self.viterbi_path[i+1] = top_state
 
     def __initialize_matrix(self):
