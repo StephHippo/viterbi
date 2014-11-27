@@ -2,6 +2,9 @@ __author__ = 'stephaniehippo'
 import unittest
 from HMM import HMM
 from viterbi_matrix import Viterbi_Matrix
+from posterior_probability import PosteriorProbability
+from forward_probability import Forward_Matrix
+from backward_probability import Backward_Matrix
 
 class TestViterbi(unittest.TestCase):
 
@@ -36,5 +39,8 @@ class TestViterbi(unittest.TestCase):
 
     def test_viterbi_path(self):
         self.casino.viterbi()
-        assert self.casino.viterbi_path == ['B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B']
+        assert self.casino.viterbi_path == ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']
 
+    def test_prob_y(self):
+        self.casino.viterbi()
+        assert sum(self.casino.viterbi_matrix['B']) == self.casino.prob_y()
