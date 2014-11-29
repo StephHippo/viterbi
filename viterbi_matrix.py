@@ -64,12 +64,6 @@ class Viterbi_Matrix:
         table += body
         print table
 
-    def prob_y(self):
-        prob = 0
-        for state in self.hmm.states:
-            prob += self.viterbi_matrix[state][-1]
-        return prob
-
     def calculate_viterbi_path(self):
         prev_state=None
         prob=0
