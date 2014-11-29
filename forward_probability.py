@@ -21,7 +21,12 @@ class Forward_Matrix:
                 for transition in self.hmm.transition_prob:
                     observation = self.hmm.observations[i+1]
                     emission_prob = self.hmm.emission_prob[state][observation]
-                    trans_prob = self.hmm.transition_prob[state][transition]
+                    trans_prob = self.hmm.transition_prob[transition][state]
                     prev_prob = self.forward_matrix[transition][i]
-                    self.forward_matrix[transition][i+1] += emission_prob * trans_prob * prev_prob
-        print self.forward_matrix
+                    self.forward_matrix[state][i+1] += emission_prob * trans_prob * prev_prob
+
+    def calculate_prob_y(self):
+        prob_y = 0
+        for state in self.hmm.states:
+            prob_y += self.forward_matrix[state][-1]
+        return prob_y
