@@ -56,5 +56,3 @@ class TestViterbi(unittest.TestCase):
         for state in self.casino_forward.forward_matrix:
             prob_y += self.casino_forward.forward_matrix[state][-1]
         assert self.casino_forward.calculate_prob_y() == prob_y
-
-    def test_posterior_prob(self):
