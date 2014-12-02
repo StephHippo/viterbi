@@ -12,7 +12,7 @@ class Backward_Matrix:
 
     def calculate_backward_probabilities(self):
         self.initialize_backward_matrix()
-        for i in xrange(len(self.hmm.observations)-1):
+        for i in xrange(len(self.hmm.observations)):
             for state in self.hmm.states:
                 for transition in self.hmm.transition_prob:
                     observation = self.hmm.observations[-(i+1)]
