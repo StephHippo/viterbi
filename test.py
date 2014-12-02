@@ -30,7 +30,6 @@ class TestViterbi(unittest.TestCase):
         self.casino = Viterbi_Matrix(casino_markov)
         self.casino_forward = Forward_Matrix(casino_markov)
 
-
     def test_viterbi(self):
         self.casino.viterbi()
         solution_matrix = {'F': [0.25, 0.1125, 0.050625, 0.022781, 0.010252, 0.004613, 0.002076, 0.000934, 0.00042, 0.000189],
@@ -57,3 +56,5 @@ class TestViterbi(unittest.TestCase):
         for state in self.casino_forward.forward_matrix:
             prob_y += self.casino_forward.forward_matrix[state][-1]
         assert self.casino_forward.calculate_prob_y() == prob_y
+
+    def test_posterior_prob(self):
